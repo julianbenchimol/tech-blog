@@ -1,20 +1,21 @@
 const express = require('express');
 const path = require('path');
+const hbs = require('express-handlebars');
+const session = require('express-session');
+
+const homeRoutes = require('./Controllers/home-routes');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-app.use(express.static('public'));
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
-app.get('/', (req, res) => res.send('Navigate to /send or /routes'));
+// app.use('/', homeRoutes)
 
-app.get('/send', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public/sendFile.html'))
-);
-
-app.get('/routes', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public/routes.html'))
-);
+app.get('/', (req, res) =>{
+    res.render('main')
+})
 
 app.listen(PORT, () =>
   console.log(`Example app listening at <http://localhost>:${PORT}`)
