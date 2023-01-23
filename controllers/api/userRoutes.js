@@ -54,3 +54,5 @@ router.post('/logout', (req, res) =>{
         res.sendStatus(404).end();
     }
 })
+
+module.exports = router;
