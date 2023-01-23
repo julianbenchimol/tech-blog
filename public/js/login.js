@@ -13,14 +13,15 @@ const loginFormHandler = async(event) =>{
             body: JSON.stringify({email, password}),
             headers: {'Content-Type': 'application/json'}
         });
+        if(response.ok){
+            document.location.replace('/profile');
+        }
+        else {
+            alert(response.statusText)
+        }
     }
 
-    if(response.ok){
-        document.location.replace('/profile');
-    }
-    else {
-        alert(response.statusText)
-    }
+
 }
 
 const signUpFormHandler = async(event) =>{
@@ -36,14 +37,15 @@ const signUpFormHandler = async(event) =>{
             body: JSON.stringify({name, email, password}),
             headers: {'Content-Type': 'application/json'}
         })
-    }
-
+        
     if(response.ok){
         document.location.replace('/profile');
     }
     else {
         alert(response.statusText)
     }
+    }
+
   };
 
   document.querySelector('.signup-form').addEventListener('submit', signUpFormHandler);
