@@ -34,3 +34,5 @@ Posts.init(
         modelName: 'posts'
     }
 )
+
+module.exports = Posts;
