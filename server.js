@@ -1,22 +1,30 @@
 const express = require('express');
-const path = require('path');
-const hbs = require('express-handlebars');
 const session = require('express-session');
+const routes = require('./controllers');
 
-const homeRoutes = require('./Controllers/home-routes');
+const sequelize = require('./config/connection');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+const sess = {
+  secret: 'Super secret secret',
+  cookie: {},
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  })
+};
 
-// app.use('/', homeRoutes)
+app.use(session(sess));
 
-app.get('/', (req, res) =>{
-    res.render('main')
-})
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(PORT, () =>
-  console.log(`Example app listening at <http://localhost>:${PORT}`)
-);
+app.use(routes);
+
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => console.log('Now listening'));
+});
